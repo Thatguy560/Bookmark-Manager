@@ -11,6 +11,7 @@ class BookmarkManager < Sinatra::Base
   get '/bookmarks' do
     # session[:bookmarks] = BookmarkManager.new.show_bookmarks
     # erb :bookmarks
+    p ENV
     @bookmarks = Bookmark.all
     # @bookmarks = ["http://www.makersacademy.com",
     # "http://www.destroyallsoftware.com",

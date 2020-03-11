@@ -9,9 +9,5 @@ gem 'rspec', group: :test
 gem 'pg'
 gem 'sinatra'
 gem 'rubocop'
-<<<<<<< HEAD
-gem 'capybara'
-=======
 gem 'capybara', group: :test
->>>>>>> 9995bca6b67abce32839b84fd021dc21348c1184
 gem 'selenium-webdriver'
