@@ -15,4 +15,20 @@
  3.Connect to the database using the pqsl command \c bookmark_manager;
  4.Run the query we have saved in the file 01_create_bookmarks_table.sql
 
- hello!
+ 
+
+get '/bookmarks/new' do
+  erb :"/bookmarks/new"
+end
+
+post '/bookmarks' do
+  url = params['url']
+  connection = PG.connect(dbname: 'bookmark_manager_test')
+  connection.exec("INSERT INTO bookmarks (url) VALUES('#{url}')")
+  redirect '/bookmarks'
+end
+
+Get the url from the submitted form data (params).
+Connect to the test database.
+Execute the SQL to insert a new bookmark to the database, with a url value of the url submitted by the user.
+Redirect to the homepage (which shows all bookmarks, thanks to the get '/bookmarks' route defined in app.rb).
