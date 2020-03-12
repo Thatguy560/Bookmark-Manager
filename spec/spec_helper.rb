@@ -4,8 +4,17 @@ require 'rubocop'
 require 'capybara'
 require 'selenium-webdriver'
 require 'capybara/rspec'
+require_relative './setup_test_database'
 
-ENV['RACK_ENV'] = 'test'
+# ENV['RACK_ENV'] = 'test'
+ENV['ENVIRONMENT'] = 'test'
+
+RSpec.configure do |config|
+    config.before(:each) do 
+      setup_test_database
+    end
+  end
+
 
 require File.join(File.dirname(__FILE__), '..', 'app.rb')
 Capybara.app = BookmarkManager
