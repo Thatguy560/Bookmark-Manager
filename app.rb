@@ -2,7 +2,7 @@ require 'sinatra/base'
 require './lib/bookmark'
 
 class BookmarkManager < Sinatra::Base 
-  enable :sessions
+  enable :sessions, :method_override
 
   get '/' do
     "Bookmark Manager"
@@ -30,6 +30,26 @@ class BookmarkManager < Sinatra::Base
   #   Bookmark.create(url: params[:url], title: params[:title])
   #   redirect '/bookmarks'
   # end
-  
+
+  delete '/bookmarks/:id' do
+    Bookmark.delete(id: params[:id])
+    redirect '/bookmarks'
+  end
+  # Adding and defining a route for this url.
+  get '/bookmarks/:id/edit' do
+    @bookmark = Bookmark.find(id: params[:id])
+    erb :"bookmarks/edit"
+  end
+    # Patch allows full or partial updates to a file?
+    patch '/bookmarks/:id' do
+      connection = PG.connect(dbname: 'bookmark_manager_test')
+      connection.exec("UPDATE bookmarks SET url = '#{params[:url]}', title = '#{params[:title]}' WHERE id = '#{params[:id]}'")
+    
+      redirect('/bookmarks')
+    end
+    
   run! if app_file == $0
 end 
+
+# adding bookmark class to the html item list.
+# We're also adding the delete button to index.erb
