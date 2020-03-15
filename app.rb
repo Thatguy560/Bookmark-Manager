@@ -1,5 +1,6 @@
 require 'sinatra/base'
-require './lib/bookmark'
+require_relative './lib/bookmark'
+require_relative './lib/database_connection_setup.rb'
 
 class BookmarkManager < Sinatra::Base 
   enable :sessions, :method_override
@@ -11,7 +12,6 @@ class BookmarkManager < Sinatra::Base
   get '/bookmarks' do
     # session[:bookmarks] = BookmarkManager.new.show_bookmarks
     # erb :bookmarks
-    p ENV
     @bookmarks = Bookmark.all
     erb :'bookmarks/index'
   end
@@ -40,7 +40,7 @@ class BookmarkManager < Sinatra::Base
     @bookmark = Bookmark.find(id: params[:id])
     erb :"bookmarks/edit"
   end
-    # Patch allows full or partial updates to a file?
+    # Patch allows full or partial updates to a file
     patch '/bookmarks/:id' do
       connection = PG.connect(dbname: 'bookmark_manager_test')
       connection.exec("UPDATE bookmarks SET url = '#{params[:url]}', title = '#{params[:title]}' WHERE id = '#{params[:id]}'")
